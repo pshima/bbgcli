@@ -1,1 +1,4 @@
-*.yaml
+*.gem
+.bundle
+Gemfile.lock
+pkg/*

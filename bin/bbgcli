@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+ 
+require 'bbgcli'
+ 
+# otherwise sinatra won't always automagically launch its embedded
+# http server when this script is executed
+set :run, true
+ 
+BBGAPI::parseopt("lb","")
