@@ -5,7 +5,11 @@ This is a command line interface for the blue box api.
 
 Installing
 -------
-Git clone for now
+
+git clone git@github.com:petey5king/bbgcli.git
+cd bbgcli
+gem build bbgcli.gemspec
+gem install bbgcli-0.0.1.gem
 
 Running
 -------
