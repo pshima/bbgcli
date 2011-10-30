@@ -38,7 +38,7 @@ module BBGAPI
 
     # Make a YAML config file
     # * +config+ :: config file path
-    def make_config
+    def create
       puts "Blue Box Config File Not Found, let's create one..."
       bbg_cust_id = ask("BBG Customer ID:  ") { |q| q.default = "none" }
       bbg_api_key = ask("BBG API Key:  ") { |q| q.default = "none" }
