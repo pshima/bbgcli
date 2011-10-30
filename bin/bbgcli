@@ -1,9 +1,26 @@
 #!/usr/bin/env ruby
- 
+
 require 'bbgcli'
- 
-# otherwise sinatra won't always automagically launch its embedded
-# http server when this script is executed
-set :run, true
- 
-BBGAPI::parseopt("lb","")
+require 'trollop'
+
+opts = Trollop::options do
+  version "bbgcli 0.0.1 - Pete Shima <pete@kingofweb.com>"
+  banner <<-EOS
+This program gives you an interactive cli to the Blue Box Group api
+
+Usage:
+       test [options] <filenames>+
+where [options] are:
+EOS
+
+  opt :api, "lb|blocks|servers", :type => String
+  opt :object, "Be interactive", :type => String
+  opt :action, "obkect action", :type => String
+  opt :item, "File to process", :type => String
+  opt :debug, "Debug Mode", :default => false
+end
+
+Trollop::die :api, "You must specify an API" if opts[:api] == ""
+
+client = BBGAPI::Client.new('./bluebox.yaml')
+client.parseopt(opts[:api],opts[:action])
