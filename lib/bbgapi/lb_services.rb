@@ -45,7 +45,7 @@ module BBGAPI
       end
 
       partial = "/api/lb_applications/#{cur_app}/lb_services"
-      api_response = BBGAPI::geturl(partial,"")
+      api_response = BBGAPI::Client.geturl(partial,"")
       api_response.each {|x|
         puts "\n"
         puts "Name:         #{x["name"]}"
@@ -59,7 +59,6 @@ module BBGAPI
         puts "Created:      #{x["created"]}"
       }
       puts "\n"
-      BBGAPI::parseopt("lb")
     end
 
     def self.only_name_id
@@ -70,7 +69,7 @@ module BBGAPI
       end
 
       partial = "/api/lb_applications/#{cur_app}/lb_services"
-      api_response = BBGAPI::geturl(partial,"")
+      api_response = BBGAPI::Client.geturl(partial,"")
       services = []
       api_response.each {|x|
         services << {"name" => "#{x["name"]}","id" => "#{x["id"]}"}
@@ -80,7 +79,6 @@ module BBGAPI
 
     def self.tbi
       puts "This is not yet implemented"
-      BBGAPI::parseopt("lb")
     end
 
   end

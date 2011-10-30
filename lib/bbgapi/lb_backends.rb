@@ -48,7 +48,7 @@ module BBGAPI
       end
 
       partial = "/api/lb_services/#{cur_service}/lb_backends"
-      api_response = BBGAPI::geturl(partial,"")
+      api_response = BBGAPI::Client.geturl(partial,"")
       api_response.each {|x|
         puts "\n"
         puts "Name:            #{x["backend_name"]}"
@@ -61,12 +61,10 @@ module BBGAPI
         }
       }
       puts "\n"
-      BBGAPI::parseopt("lb")
     end
 
     def self.tbi
       puts "This is not yet implemented"
-      BBGAPI::parseopt("lb")
     end
 
   end

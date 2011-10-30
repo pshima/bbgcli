@@ -32,11 +32,11 @@ module BBGAPI
       @debug = true
     end
 
-    def help
+    def self.help
       puts "test"
     end
 
-    def geturl(partial, opts={})
+    def self.geturl(partial, opts={})
       url = "#{API_URL}#{partial}"
       format :json
       response = get(url)
@@ -47,13 +47,13 @@ module BBGAPI
       response
     end
 
-    def posturl
+    def self.posturl
       # alternatively:
       # raise NotImplementedError, "bla"
       puts "bla"
     end
 
-    def puturl
+    def self.puturl
       # alternatively:
       # raise NotImplementedError, "bla"
       puts "bla"

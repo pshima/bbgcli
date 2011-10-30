@@ -17,7 +17,7 @@ module BBGAPI
 
     def self.list
       partial = '/api/lb_applications'
-      api_response = BBGAPI::geturl(partial,"")
+      api_response = BBGAPI::Client.geturl(partial,"")
       apps = []
       api_response.each {|x|
         apps << {"name" => "#{x["name"]}","id" => "#{x["id"]}"}
@@ -37,7 +37,6 @@ module BBGAPI
           menu.choices(k["name"]) {self.set_app(k["id"])}
         }
       end
-      BBGAPI::parseopt("lb")
     end
 
     def self.get_app
@@ -50,7 +49,7 @@ module BBGAPI
 
     def self.only_name_id
       partial = '/api/lb_applications'
-      api_response = BBGAPI::geturl(partial,"")
+      api_response = BBGAPI::Client.geturl(partial,"")
       apps = []
       api_response.each {|x|
         apps << {"name" => "#{x["name"]}","id" => "#{x["id"]}"}
@@ -60,7 +59,6 @@ module BBGAPI
 
     def self.tbi
       puts "This is not yet implemented"
-      BBGAPI::parseopt("lb")
     end
 
   end
