@@ -4,6 +4,7 @@ require 'highline'
 require 'highline/import'
 require 'httparty'
 require 'yaml'
+require 'bbgapi/config'
 require 'bbgapi/lb_applications'
 require 'bbgapi/lb_backends'
 require 'bbgapi/lb_services'
@@ -12,24 +13,8 @@ module BBGAPI
 
   @@debug = false
 
-  begin
-    @@bluebox_config = YAML.load_file('./bluebox.yaml')
-  rescue => e
-    puts "Blue Box Config File Not Found, let's create one..."
-    bbg_cust_id = ask("BBG Customer ID:  ") { |q| q.default = "none" }
-    bbg_api_key = ask("BBG API Key:  ") { |q| q.default = "none" }
-
-    puts "#{bbg_cust_id}:#{bbg_api_key}"
-
-    a = {'bluebox_customer_id' => bbg_cust_id, 'bluebox_api_key' => bbg_api_key}
-    File.open('bluebox.yaml', 'w') do |out|
-      out.write(a.to_yaml)
-    end
-    @@bluebox_config = YAML.load_file('./bluebox.yaml')
-  end
-
   def self.config
-    @@bluebox_config
+    @@bluebox_config ||= BBGAPI::Config.new('./bluebox.yaml')
   end
 
   def self.debug
