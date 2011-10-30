@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Bbgcli::VERSION
   s.authors     = ["Pete Shima"]
   s.email       = ["pete@kingofweb.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/petey5king/bbgcli"
   s.summary     = %q{An interactive cli for the blue box api}
   s.description = %q{An interactive cli for the blue box api in ruby}
 
