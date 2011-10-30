@@ -21,4 +21,6 @@ EOS
 end
 
 Trollop::die :api, "You must specify an API" if opts[:api] == ""
-BBGAPI::parseopt(opts[:api],opts[:action])
+
+client = BBGAPI::Client.new('./bluebox.yaml')
+client.parseopt(opts[:api],opts[:action])
