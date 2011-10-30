@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require './lib/bbgapi.rb'
+require 'bbgcli'
 require 'trollop'
 
 opts = Trollop::options do
