@@ -1,11 +1,10 @@
-module BBGAPI
-
-#you need httparty gems installed
 require 'httparty'
 require 'highline'
 require 'highline/import'
 require 'pp'
-  
+
+module BBGAPI
+
   @@debug = false
 
   begin
