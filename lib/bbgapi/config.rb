@@ -54,12 +54,12 @@ module BBGAPI
 
     # A quick read accessor for the +@config+ hash
     def [](key)
-      @config[key]
+      @config[key.to_s]
     end
 
     # A quick write accessor for the +@config+ hash
     def []=(key, value)
-      @config[key] = value
+      @config[key.to_s] = value
     end
 
   end
