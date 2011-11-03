@@ -83,11 +83,11 @@ module BBGAPI
         puts "blocks"
       when "servers"
         choose do |menu|
-          puts "Load Balancer API - http://bit.ly/ucbpDF"
+          puts "Servers API - http://bit.ly/uDd6wQ"
           puts "----------------------------------------"
           menu.prompt = "Which Objects Would You Like?  "
 
-          menu.choices(:list) {BBGAPI::Servers.menulist}
+          menu.choices(:list) {BBGAPI::Servers.list}
           menu.choices(:exit) {exit 0}
         end
       when "help"
