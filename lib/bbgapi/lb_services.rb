@@ -77,6 +77,22 @@ module BBGAPI
       return services
     end
 
+    def self.haproxyinfo
+      begin
+        cur_app = BBGAPI::LB_Applications.get_app
+      rescue
+        cur_app = self.recurse
+      end
+
+      partial = "/api/lb_applications/#{cur_app}/lb_services"
+      api_response = BBGAPI::Client.geturl(partial,"")
+      haproxy = []
+      api_response.each {|x|
+        haproxy << {"name" => "#{x["name"]}","status_url" => "#{x["status_url"]}","status_username" => "#{x["status_username"]}","status_password" => "#{x["status_password"]}"}
+      }
+      return haproxy
+    end    
+
     def self.tbi
       puts "This is not yet implemented"
     end

@@ -59,13 +59,7 @@ module BBGAPI
       puts "bla"
     end
 
-    def parseopt(type="",action="",id="")
-      ssh_key_file = File.new("#{ENV['HOME']}/.ssh/id_rsa.pub", "r")
-      keyfile = ssh_key_file.gets
-      self.class.basic_auth config[:bluebox_customer_id], config[:bluebox_api_key]
-
-      case type
-      when "lb"
+    def self.lb_advanced
         choose do |menu|
           puts "Load Balancer API - http://bit.ly/ucbpDF"
           puts "----------------------------------------"
@@ -76,6 +70,24 @@ module BBGAPI
           menu.choices(:backends) {BBGAPI::LB_Backends.menulist}
           menu.choices(:machines)
           menu.choices(:exit) {exit 0}
+        end
+    end
+
+    def parseopt(type="",action="",id="")
+      ssh_key_file = File.new("#{ENV['HOME']}/.ssh/id_rsa.pub", "r")
+      keyfile = ssh_key_file.gets
+      self.class.basic_auth config[:bluebox_customer_id], config[:bluebox_api_key]
+
+      case type
+      when "lb"
+        choose do |menu|
+          puts "Load Balancer API - http://bit.ly/ucbpDF"
+          puts "----------------------------------------"
+          menu.prompt = "Easy or Advanced Mode?  "
+          menu.choices(:easy) {BBGAPI::LB_Easy.menulist}
+          menu.choices(:advanced) {BBGAPI::Client.lb_advanced}
+          menu.choices(:exit) {exit 0}
+          puts "\n"
         end
       when "blocks"
         # alternatively:
