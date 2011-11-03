@@ -25,3 +25,6 @@ Trollop::die :api, "You must specify an API" if opts[:api] == ""
 client = BBGAPI::Client.new("#{ENV['HOME']}/bluebox.yaml")
 client.parseopt(opts[:api],opts[:action])
 
+for i in 0..5
+  client.parseopt(opts[:api],opts[:action])
+end

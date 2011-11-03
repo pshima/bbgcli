@@ -82,9 +82,14 @@ module BBGAPI
         # raise NotImplementedError, "blocks"
         puts "blocks"
       when "servers"
-        # alternatively:
-        # raise NotImplementedError, "servers"
-        puts "servers"
+        choose do |menu|
+          puts "Load Balancer API - http://bit.ly/ucbpDF"
+          puts "----------------------------------------"
+          menu.prompt = "Which Objects Would You Like?  "
+
+          menu.choices(:list) {BBGAPI::Servers.menulist}
+          menu.choices(:exit) {exit 0}
+        end
       when "help"
         help
       else
