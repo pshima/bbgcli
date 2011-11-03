@@ -84,15 +84,22 @@ module BBGAPI
           puts "Load Balancer API - http://bit.ly/ucbpDF"
           puts "----------------------------------------"
           menu.prompt = "Easy or Advanced Mode?  "
+          menu.choices(:open_documentation) {system("open", "http://bit.ly/ucbpDF")}
           menu.choices(:easy) {BBGAPI::LB_Easy.menulist}
           menu.choices(:advanced) {BBGAPI::Client.lb_advanced}
           menu.choices(:exit) {exit 0}
           puts "\n"
         end
       when "blocks"
-        # alternatively:
-        # raise NotImplementedError, "blocks"
-        puts "blocks"
+        choose do |menu|
+          puts "Blocks API - http://bit.ly/v9FtWW"
+          puts "----------------------------------------"
+          menu.prompt = "Easy or Advanced Mode?  "
+          menu.choices(:easy) {BBGAPI::LB_Easy.menulist}
+          menu.choices(:advanced) {BBGAPI::Client.lb_advanced}
+          menu.choices(:exit) {exit 0}
+          puts "\n"
+        end
       when "servers"
         choose do |menu|
           puts "Servers API - http://bit.ly/uDd6wQ"
