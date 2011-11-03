@@ -63,6 +63,22 @@ module BBGAPI
       puts "\n"
     end
 
+
+    def self.raw
+      begin
+        cur_app = BBGAPI::LB_Applications.get_app
+        cur_service = BBGAPI::LB_Services.get_service
+      rescue
+        self.recurse
+        cur_app = BBGAPI::LB_Applications.get_app
+        cur_service = BBGAPI::LB_Services.get_service
+      end
+
+      partial = "/api/lb_services/#{cur_service}/lb_backends"
+      api_response = BBGAPI::Client.geturl(partial,"")
+      return api_response
+    end
+
     def self.tbi
       puts "This is not yet implemented"
     end

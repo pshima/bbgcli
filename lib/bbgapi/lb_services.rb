@@ -23,8 +23,6 @@ module BBGAPI
 
     def self.recurse
       apps = BBGAPI::LB_Applications.only_name_id
-      pp apps
-      exit 0
       choose do |menu|
         menu.prompt = "Which Application?"
         apps.each {|k|
@@ -34,7 +32,7 @@ module BBGAPI
           }
         }
       end
-      return cur_app
+      return BBGAPI::LB_Applications.get_app
     end
 
     def self.list
