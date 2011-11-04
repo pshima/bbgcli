@@ -48,7 +48,6 @@ module BBGAPI
 
     def self.delete
       raw_apps = self.raw
-
       choose do |menu|
         menu.prompt = "Which App To Delete?"
         raw_apps.each {|app|
