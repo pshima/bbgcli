@@ -73,6 +73,19 @@ module BBGAPI
         end
     end
 
+    def self.blocks_advanced
+        choose do |menu|
+          puts "Load Balancer API - http://bit.ly/ucbpDF"
+          puts "----------------------------------------"
+          menu.prompt = "Which Objects Would You Like?  "
+
+          menu.choices(:blocks) {BBGAPI::Blocks.menulist}
+          menu.choices(:templates) {BBGAPI::Blocks_Templates.menulist}
+          menu.choices(:products) {BBGAPI::Blocks_Products.menulist}
+          menu.choices(:exit) {exit 0}
+        end
+    end
+
     def parseopt(type="",action="",id="")
       ssh_key_file = File.new("#{ENV['HOME']}/.ssh/id_rsa.pub", "r")
       keyfile = ssh_key_file.gets
@@ -84,9 +97,9 @@ module BBGAPI
           puts "Load Balancer API - http://bit.ly/ucbpDF"
           puts "----------------------------------------"
           menu.prompt = "Easy or Advanced Mode?  "
-          menu.choices(:open_documentation) {system("open", "http://bit.ly/ucbpDF")}
-          menu.choices(:easy) {BBGAPI::LB_Easy.menulist}
-          menu.choices(:advanced) {BBGAPI::Client.lb_advanced}
+          menu.choices(:open_documentation) {system("open", "http://bit.ly/ucbpDF")} #fuck windows anyway
+          menu.choices(:easy_mode) {BBGAPI::LB_Easy.menulist}
+          menu.choices(:advanced_mode) {BBGAPI::Client.lb_advanced}
           menu.choices(:exit) {exit 0}
           puts "\n"
         end
@@ -95,8 +108,9 @@ module BBGAPI
           puts "Blocks API - http://bit.ly/v9FtWW"
           puts "----------------------------------------"
           menu.prompt = "Easy or Advanced Mode?  "
-          menu.choices(:easy) {BBGAPI::LB_Easy.menulist}
-          menu.choices(:advanced) {BBGAPI::Client.lb_advanced}
+          menu.choices(:open_documentation) {system("open", "http://bit.ly/v9FtWW")} #fuck windows anyway
+          menu.choices(:easy_mode) {BBGAPI::LB_Easy.menulist}
+          menu.choices(:advanced_mode) {BBGAPI::Client.blocks_advanced}
           menu.choices(:exit) {exit 0}
           puts "\n"
         end
@@ -105,7 +119,7 @@ module BBGAPI
           puts "Servers API - http://bit.ly/uDd6wQ"
           puts "----------------------------------------"
           menu.prompt = "Which Objects Would You Like?  "
-
+          menu.choices(:open_documentation) {system("open", "http://bit.ly/uDd6wQ")} #fuck windows anyway
           menu.choices(:list) {BBGAPI::Servers.list}
           menu.choices(:exit) {exit 0}
         end

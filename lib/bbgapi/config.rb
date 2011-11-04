@@ -35,6 +35,7 @@ module BBGAPI
         out.write(@config.to_yaml)
       end
       puts "Config file written, please rerun the app"
+      exit 0
     end
 
     # Make a YAML config file
