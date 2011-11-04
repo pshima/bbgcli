@@ -9,9 +9,9 @@ module BBGAPI
         menu.prompt = "Which Action?"
 
         menu.choices(:list) {self.list}
-        menu.choices(:create) {self.tbi}
+        menu.choices(:create) {self.create}
         menu.choices(:update) {self.tbi}
-        menu.choices(:delete) {self.tbi}
+        menu.choices(:delete) {self.delete}
       end
     end
 
@@ -30,13 +30,45 @@ module BBGAPI
         puts "Created:     #{x["created"]}"
       }
       puts "\n"
+    end
+
+    def self.create
+      app_name = ask("Specify a name for the new app:  ")
+      options = { :body => {
+        :name => app_name
+        } }
+      partial = '/api/lb_applications'
+      api_response = BBGAPI::Client.posturl(partial,options)
+      puts "App Created!"
+      puts "Name:        #{api_response["name"]}"
+      puts "ID:          #{api_response["id"]}"
+      puts "External IP: #{api_response["ip_v4"]}"
+      puts "Internal IP: #{api_response["source_ip"]}"
+    end
+
+    def self.delete
+      raw_apps = self.raw
 
       choose do |menu|
-        menu.prompt = "Which App Should I Set as Default?"
-        apps.each {|k|
-          menu.choices(k["name"]) {self.set_app(k["id"])}
+        menu.prompt = "Which App To Delete?"
+        raw_apps.each {|app|
+          menu.choices(app["name"]) {self.delete_confirm(app["name"],app["id"])}
         }
       end
+    end
+
+    def self.delete_confirm(name,id)
+      choose do |menu|
+        menu.prompt = "Are you sure you want to delete app #{name}?"
+
+        menu.choices(:yes) {
+          partial = "/api/lb_applications/#{id}"
+          api_response = BBGAPI::Client.deleteurl(partial)
+          pp api_response
+        }
+        menu.choices(:no)
+      end
+
     end
 
     def self.get_app
@@ -45,6 +77,12 @@ module BBGAPI
 
     def self.set_app (appid="")
       @@current_app = appid
+    end
+
+    def self.raw
+      partial = '/api/lb_applications'
+      api_response = BBGAPI::Client.geturl(partial,"")
+      return api_response
     end
 
     def self.only_name_id

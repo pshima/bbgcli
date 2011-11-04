@@ -38,8 +38,22 @@ module BBGAPI
 
     def self.geturl(partial, opts={})
       url = "#{API_URL}#{partial}"
-      format :json
+
       response = get(url)
+
+      puts response.code
+
+      if response.code == 401
+        puts "Access denied.  Bad Customer Number or API Key."
+        exit 0
+      end
+
+      if response.code != 200
+        puts "Response code is #{response.code}"
+        puts response
+        exit 0
+      end
+
       if @debug
         puts "Response Code: #{response.code}"
         puts "Response RAW: #{response}"
@@ -47,12 +61,18 @@ module BBGAPI
       response
     end
 
-    def self.posturl
-      # alternatively:
-      # raise NotImplementedError, "bla"
-      puts "bla"
+    def self.posturl(partial, opts={})
+      url = "#{API_URL}#{partial}"
+      response = post(url,opts)
+      return response
     end
 
+    def self.deleteurl(partial)
+      url = "#{API_URL}#{partial}"
+      response = delete(url)
+      return response
+    end
+    
     def self.puturl
       # alternatively:
       # raise NotImplementedError, "bla"
