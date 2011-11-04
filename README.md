@@ -11,7 +11,6 @@ Installing
 Running
 -------
 
-    cd bbgcli
     bbgcli --api <lb|servers|blocks>
 
 Setup
