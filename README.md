@@ -61,3 +61,4 @@ Todo
 * Finish blocks commands other than list
 * Remember default ids in yaml
 * Find a way to query the api url less for load concerns/speed
+* Safety checks against production
