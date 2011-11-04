@@ -7,7 +7,6 @@ module BBGAPI
         puts "----------------------------------------"
         menu.prompt = "Which Action?"
         menu.choices(:list) {self.list}
-        menu.choices(:create) {self.tbi}
         menu.choices(:update) {self.tbi}
         menu.choices(:delete) {self.tbi}
       end
@@ -62,7 +61,6 @@ module BBGAPI
       }
       puts "\n"
     end
-
 
     def self.raw
       begin

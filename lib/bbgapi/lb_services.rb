@@ -59,6 +59,59 @@ module BBGAPI
       puts "\n"
     end
 
+    def self.create
+      begin
+        cur_app = BBGAPI::LB_Applications.get_app
+      rescue
+        cur_app = self.recurse
+      end
+
+      choose do |menu|
+        menu.prompt = "HTTP or HTTPS?"
+        menu.choices(:http) {service_type="http"}
+        menu.choices(:https) {service_type="https"}
+      end
+
+      options = { :body => {
+        :service_type => service_type
+        } }
+
+      partial = "/api/lb_applications/#{cur_app}/lb_services"
+      api_response = BBGAPI::Client.posturl(partial,options)
+      pp api_response
+      #puts "Name:         #{api_response["name"]}"
+
+      puts "\n"
+    end
+
+    def self.delete
+      raw_services = self.raw
+      choose do |menu|
+        menu.prompt = "Which Service To Delete?"
+        raw_services.each {|service|
+          menu.choices(service["name"]) {self.delete_confirm(service["name"],service["id"])}
+        }
+      end
+    end
+
+    def self.delete_confirm(name,id)
+      begin
+        cur_app = BBGAPI::LB_Applications.get_app
+      rescue
+        cur_app = self.recurse
+      end
+
+      choose do |menu|
+        menu.prompt = "Are you sure you want to delete service #{name}?"
+        menu.choices(:yes) {
+          partial = "/api/lb_applications/#{cur_app}/lb_services/#{id}"
+          api_response = BBGAPI::Client.deleteurl(partial)
+          pp api_response
+        }
+        menu.choices(:no)
+      end
+    end
+
     def self.only_name_id
       begin
         cur_app = BBGAPI::LB_Applications.get_app
@@ -74,6 +127,19 @@ module BBGAPI
       }
       return services
     end
+
+    def self.raw
+      begin
+        cur_app = BBGAPI::LB_Applications.get_app
+      rescue
+        cur_app = self.recurse
+      end
+
+      partial = "/api/lb_applications/#{cur_app}/lb_services"
+      api_response = BBGAPI::Client.geturl(partial,"")
+      return api_response
+    end
+
 
     def self.haproxyinfo
       begin
