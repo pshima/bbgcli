@@ -33,6 +33,13 @@ module BBGAPI
       end
     end
 
+    def self.raw
+      partial = '/api/servers'
+      api_response = BBGAPI::Client.geturl(partial,"")
+      nodes = api_response.sort_by {|var| var["hostname"]}
+      return nodes
+    end
+
     def self.fulllist
       partial = '/api/servers'
       api_response = BBGAPI::Client.geturl(partial,"")

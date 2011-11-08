@@ -7,7 +7,7 @@ module BBGAPI
         menu.prompt = "Which Action?"
 
         menu.choices(:list) {self.list}
-        menu.choices(:create) {self.tbi}
+        menu.choices(:create) {self.create}
         menu.choices(:update) {self.tbi}
         menu.choices(:delete) {self.tbi}
       end
@@ -41,6 +41,50 @@ module BBGAPI
 
     end
 
+    def self.blocksmenu
+      choose do |menu|
+        menu.prompt = "Are you templating a VPS or a Block?"
+
+        menu.choices(:vps) {
+          vpslist = BBGAPI::Servers.raw
+          choose do |vpsmenu|
+            vpsmenu.prompt = "Which VPS?"
+            vpslist.each {|vps| 
+              vpsmenu.choices(vps["hostname"]) {return vps["id"]}
+            }
+          end
+        }
+        menu.choices(:block) {
+          vpslist = BBGAPI::Blocks.raw
+          choose do |vpsmenu|
+            vpsmenu.prompt = "Which Block?"
+            vpslist.each {|vps| 
+              vpsmenu.choices(vps["hostname"]) {return vps["id"]}
+            } 
+          end
+        }
+      end
+    end
+
+    def self.create
+      blockid = self.blocksmenu
+
+      options = { :body => {
+        :id => blockid
+        } }
+
+      partial = '/api/block_templates'
+      api_response = BBGAPI::Client.posturl(partial,options)
+      puts "#{api_response["text"]}"
+    end
+
+    def self.raw
+      partial = '/api/block_templates'
+      api_response = BBGAPI::Client.geturl(partial,"")
+      sorted = api_response.sort_by {|a| a["created"]}.reverse
+      return sorted
+    end
+    
     def self.tbi
       puts "This is not yet implemented"
     end

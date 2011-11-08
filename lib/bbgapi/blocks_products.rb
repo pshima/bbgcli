@@ -26,7 +26,11 @@ module BBGAPI
       puts "\n"
     end
 
-
+    def self.raw
+      partial = '/api/block_products'
+      api_response = BBGAPI::Client.geturl(partial,"")
+      return api_response
+    end
 
 
     def self.tbi

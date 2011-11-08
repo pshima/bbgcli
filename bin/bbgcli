@@ -8,7 +8,7 @@ opts = Trollop::options do
   opt :debug, "Debug Mode", :default => false
 end
 
-Trollop::die :api, "You must specify an API" if opts[:api] == ""
+Trollop::die :api, "You must specify an --api parameter" if !opts[:api]
 
 client = BBGAPI::Client.new("#{ENV['HOME']}/.bbgcli")
 client.parseopt(opts[:api],opts[:action])
