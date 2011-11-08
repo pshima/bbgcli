@@ -8,6 +8,11 @@ Installing
 
     gem install bbgcli
 
+Upgrading
+-------
+
+    gem install bbgcli
+
 Running
 -------
 
@@ -47,6 +52,15 @@ Interactive interface
     5. exit
 
     And More!
+
+Version 0.0.3
+-------
+* Create and delete load balancer applications
+* Create and delete load balancer services
+* Fixed showing help if no command line options are given
+* Create blocks from templates
+* Create templates from VPS or Blocks
+
 
 Version 0.0.2
 -------
