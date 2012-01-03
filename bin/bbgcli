@@ -10,7 +10,9 @@ end
 
 Trollop::die :api, "You must specify an --api parameter" if !opts[:api]
 
-client = BBGAPI::Client.new("#{ENV['HOME']}/.bbgcli")
+configpath="#{ENV['HOME']}/.bbgcli"
+
+client = BBGAPI::Client.new(configpath)
 client.parseopt(opts[:api],opts[:action])
 
 for i in 0..25

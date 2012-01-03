@@ -53,6 +53,10 @@ Interactive interface
 
     And More!
 
+Version 0.0.4
+-------
+
+
 Version 0.0.3
 -------
 * Create and delete load balancer applications
