@@ -1,5 +1,7 @@
 
 module BBGAPI
+  @dnssuffix = '.blueboxgrid.com'
+
   class Client
 
     API_URL = "https://boxpanel.bluebox.net"
@@ -28,6 +30,10 @@ module BBGAPI
       }
     end
 
+    # def self.configload
+    #   configload = Config.new(@config_file)
+    # end
+
     def debug!
       @debug = true
     end
@@ -41,7 +47,7 @@ module BBGAPI
 
       response = get(url)
 
-      puts response.code
+      #puts response.code
 
       if response.code == 401
         puts "Access denied.  Bad Customer Number or API Key."
@@ -118,7 +124,7 @@ module BBGAPI
           puts "----------------------------------------"
           menu.prompt = "Easy or Advanced Mode?  "
           menu.choices(:open_documentation) {system("open", "http://bit.ly/ucbpDF")} #fuck windows anyway
-          menu.choices(:easy_mode) {BBGAPI::LB_Easy.menulist}
+          menu.choices(:easy_mode) {BBGAPI::LB_Easy.menulist(self.config)}
           menu.choices(:advanced_mode) {BBGAPI::Client.lb_advanced}
           menu.choices(:exit) {exit 0}
           puts "\n"

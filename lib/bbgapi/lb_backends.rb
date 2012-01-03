@@ -62,6 +62,12 @@ module BBGAPI
       puts "\n"
     end
 
+
+    def self.add_from_bootstrap(serverid,lbid)
+      puts "Server ID:#{serverid}"
+      puts "LB ID:#{lbid}"
+    end
+
     def self.raw
       begin
         cur_app = BBGAPI::LB_Applications.get_app

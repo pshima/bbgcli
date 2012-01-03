@@ -19,9 +19,9 @@ module BBGAPI
         puts "\n"
         puts "Name:        #{x["hostname"]}"
         puts "ID:          #{x["id"]}"
-        puts "Description: #{x["description"]}"
-        puts "IP:          #{x["ips"].first["address"]}"
-        puts "Status:      #{x["status"]}"
+        if not x["description"].to_s.empty?
+          puts "Description: #{x["description"]}"
+        end
       }
       puts "\n"
 

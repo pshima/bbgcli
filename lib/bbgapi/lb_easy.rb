@@ -1,8 +1,10 @@
 module BBGAPI
   class LB_Easy
 
-
-    def self.menulist
+    def self.menulist(config)
+      @@config = config
+      #["bluebox_customer_id"]
+      puts BBGAPI.dnssuffix
       choose do |menu|
         puts "Load Balancer Easy Functions"
         puts "----------------------------------------"
@@ -10,6 +12,7 @@ module BBGAPI
 
         menu.choices(:get_haproxy_login) {self.haproxy_login}
         menu.choices(:find_machines_in_pool) {self.machines_in_pool}
+        menu.choices(:remove_machine_in_pool) {self.remove_machine_in_pool}
 
       end
     end
@@ -28,6 +31,10 @@ module BBGAPI
       puts "\nNodes in Pool:\n"
       nodes.first["lb_machines"].each {|x| puts "#{x["hostname"]}"}
       puts "\n"
+    end
+
+    def self.remove_machine_in_pool
+      puts "Not yet implemented."
     end
 
 

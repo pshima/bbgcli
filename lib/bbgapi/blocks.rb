@@ -15,19 +15,28 @@ module BBGAPI
     def self.list
       partial = '/api/blocks'
       api_response = BBGAPI::Client.geturl(partial,"")
-      pp api_response
-      # apps = []
-      # api_response.each {|x|
-      #   apps << {"name" => "#{x["name"]}","id" => "#{x["id"]}"}
-      #   puts "\n"
-      #   puts "Name:        #{x["name"]}"
-      #   puts "ID:          #{x["id"]}"
-      #   puts "Description: #{x["description"]}"
-      #   puts "External IP: #{x["ip_v4"]}"
-      #   puts "Internal IP: #{x["source_ip_v4"]}"
-      #   puts "Created:     #{x["created"]}"
-      # }
-      # puts "\n"
+
+      api_response.each {|x|
+        puts "\n"
+        puts "Name:        #{x["hostname"]}"
+        puts "ID:          #{x["id"]}"
+        puts "External IP: #{x["ips"].first["address"]}"
+        if !x["lb_applications"].empty?
+          puts "LB App:      #{x["lb_applications"].first["lb_application_name"]}"
+        end
+      }
+      puts "\n"
+
+    end
+
+    def self.find_id_from_name
+      partial = '/api/blocks'
+      api_response = BBGAPI::Client.geturl(partial,"")
+
+      machines=api_response.first["lb_machines"]
+      hostname = "#{id}.c45451"
+      srv = machines.find_all{|item| item["hostname"] == hostname }
+      srv_id = srv.first["id"]
 
     end
 
@@ -78,17 +87,57 @@ module BBGAPI
         puts "IP: #{api_response["ips"].first["address"]}"
         puts "Status: #{api_response["status"]}"
         puts "\n"
+        puts "Sleeping 5 minutes while server boots up"
+        sleep 300
         choose do |menu|
           menu.prompt = "Do you want to ssh to this new server?"
           menu.choices(:yes) {
-            puts "sleeping 5 minutes" # really 3 minutes but will feel like 5.
-            sleep 180
             system("open", "ssh://deploy@#{api_response["ips"].first["address"]}")
           }
           menu.choices(:no)
         end
+        choose do |menu|
+          menu.prompt = "Do you want to bootstrap this new server?"
+          menu.choices(:yes) {
+            
+            ssh_host = api_response["ips"].first["address"]
+            ssh_user = 'deploy'
+
+            begin
+              Net::SSH.start( ssh_host, ssh_user ) do|ssh|
+                output = ssh.exec('sudo chmod +x /root/bootstrap.sh && sudo /root/bootstrap.sh')
+                puts output
+              end
+            rescue Net::SSH::HostKeyMismatch => e
+              puts "remembering new key: #{e.fingerprint}"
+              e.remember_host!
+              retry
+            end
+          }
+          menu.choices(:no)
+        end
+        choose do |menu|
+          menu.prompt = "Do you want to add this machine to a load balanced pool?"
+          menu.choices(:yes) {
+
+            ssh_host = api_response["ips"].first["address"]
+            ssh_user = 'deploy'
+
+            begin
+              Net::SSH.start( ssh_host, ssh_user ) do|ssh|
+                output = ssh.exec('sudo chmod +x /root/tools/lb_add.sh && sudo /root/tools/lb_add.sh autoadd')
+                puts output
+              end
+            rescue Net::SSH::HostKeyMismatch => e
+              puts "remembering new key: #{e.fingerprint}"
+              e.remember_host!
+              retry
+            end
+          }
+          menu.choices(:no)
+        end
       else
-        puts "Recieved a #{api_response.code} to the request"
+        #puts "Recieved a #{api_response.code} to the request"
       end
     end
 
